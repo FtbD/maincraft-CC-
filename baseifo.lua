@@ -32,32 +32,16 @@ local targets = {"ENTITY", "SIGNAL", "UNKNOWN", "DRONE", "PLAYER", "MOTION"}
 
 local function soundStartup()
   if not sp then return end
-  sp.playSound("minecraft:block.beacon.activate", 1, 0.55)
+  sp.playSound("minecraft:block.beacon.activate", 1, 0.45)
   sleep(0.35)
-  sp.playSound("minecraft:block.conduit.activate", 0.8, 0.75)
-  sleep(0.25)
-  sp.playSound("minecraft:block.amethyst_block.resonate", 0.6, 0.65)
-end
-
-local function soundPing()
-  if not sp then return end
-  sp.playSound("minecraft:block.amethyst_block.resonate", 0.35, 0.55)
-end
-
-local function soundAlert()
-  if not sp then return end
-  sp.playSound("minecraft:entity.warden.heartbeat", 1, 0.65)
-  sleep(0.3)
-  sp.playSound("minecraft:block.respawn_anchor.charge", 0.8, 0.55)
-  sleep(0.2)
-  sp.playSound("minecraft:entity.warden.nearby_close", 0.7, 0.6)
+  sp.playSound("minecraft:block.conduit.activate", 0.8, 0.65)
 end
 
 local function soundShutdown()
   if not sp then return end
-  sp.playSound("minecraft:block.beacon.deactivate", 1, 0.55)
+  sp.playSound("minecraft:block.beacon.deactivate", 1, 0.45)
   sleep(0.25)
-  sp.playSound("minecraft:block.conduit.deactivate", 0.8, 0.7)
+  sp.playSound("minecraft:block.conduit.deactivate", 0.8, 0.65)
 end
 
 local function writeAt(x, y, text, fg, bg)
@@ -78,13 +62,11 @@ end
 local function bar(x, y, w, percent, col)
   writeAt(x, y, "[", colors.gray)
   local fill = math.floor(w * percent / 100)
-
   for i = 1, w do
     term.setCursorPos(x + i, y)
     term.setBackgroundColor(i <= fill and col or colors.gray)
     term.write(" ")
   end
-
   writeAt(x + w + 1, y, "] " .. percent .. "%", colors.white)
   term.setBackgroundColor(colors.black)
 end
@@ -196,13 +178,8 @@ local function drawInterface()
 
   writeAt(4, H - 1, "CTRL+T STOP // SECURE BASE TERMINAL // RADAR SWEEP ACTIVE", colors.gray)
 
-  if tick % 70 == 0 then
-    soundPing()
-  end
-
   if math.random(1, 55) == 1 then
     alertTimer = 10
-    soundAlert()
   end
 
   angle = (angle + 7) % 360
